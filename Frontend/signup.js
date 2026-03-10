@@ -13,19 +13,17 @@ form.addEventListener("submit", async function (e) {
     password,
   };
 
+  console.log(userData);
+
   try {
-    const response = await fetch("http://localhost:3000/auth/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    });
+    const response = await axios.post(
+      "http://localhost:3000/auth/signup",
+      userData,
+    );
 
-    const data = await response.json();
-
-    alert(data.message);
+    alert(response.data.message);
+    console.log(response.data);
   } catch (error) {
-    console.log(error);
+    alert(`User with same email is already exists`);
   }
 });
