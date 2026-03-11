@@ -55,6 +55,7 @@ body {
 button {
     width: 100%;
     padding: 12px;
+    margin-top: 10px;
     border: none;
     background: #4CAF50;
     color: white;
@@ -65,4 +66,25 @@ button {
 
 button:hover {
     background: #45a049;
+}
+
+/* Signup link */
+
+.signup-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.signup-link p {
+    color: #bbbbbb;
+    margin-bottom: 8px;
+}
+
+.signup-link a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+.signup-link a:hover {
+    text-decoration: underline;
 }
