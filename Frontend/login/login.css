@@ -88,3 +88,9 @@ button:hover {
 .signup-link a:hover {
     text-decoration: underline;
 }
+
+#message {
+    text-align: center;
+    margin-top: 15px;
+    color: #ff6b6b;
+}
