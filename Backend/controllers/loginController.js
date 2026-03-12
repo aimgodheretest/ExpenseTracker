@@ -1,11 +1,12 @@
 const db = require("../utils/dbConnection");
+const bcrypt = require("bcrypt");
 
 const loginUser = (req, res) => {
   const { email, password } = req.body;
 
   const findUser = `SELECT * FROM users WHERE email=?`;
 
-  db.execute(findUser, [email], (err, result) => {
+  db.execute(findUser, [email], async (err, result) => {
     if (err) {
       console.log(err);
       res.status(500).send(err.message);
@@ -23,9 +24,10 @@ const loginUser = (req, res) => {
     const user = result[0];
 
     //2.Password Check
-    if (user.password !== password) {
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
       res.status(401).json({
-        message: "User not authorized",
+        message: "Invalid credentials",
       });
       return;
     }

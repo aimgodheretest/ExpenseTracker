@@ -23,6 +23,8 @@ form.addEventListener("submit", async function (e) {
 
     alert(response.data.message);
     console.log(response.data);
+
+    form.reset();
   } catch (error) {
     alert(`User with same email is already exists`);
   }
