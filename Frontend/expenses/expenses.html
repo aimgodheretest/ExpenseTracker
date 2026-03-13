@@ -1,54 +1,63 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Expense Tracker</title>
+<head>
+<meta charset="UTF-8">
+<title>Expense Tracker</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="expenses.css" />
+<link rel="stylesheet" href="expenses.css">
 
-    <!-- Axios -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  </head>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
 
-  <body>
-    <div class="main-container">
-      <!-- LEFT SIDE : FORM -->
+<body>
 
-      <div class="container">
-        <h2>Track Your Expenses</h2>
+<h1 class="title">Expense Tracker</h1>
+
+<div class="main-container">
+
+    <!-- ADD EXPENSE -->
+
+    <div class="card">
+
+        <h2>Add Expense</h2>
 
         <div class="input-group">
-          <label>Amount</label>
-          <input type="number" id="amount" placeholder="Enter amount" />
+            <label>Amount</label>
+            <input type="number" id="amount" placeholder="Enter amount">
         </div>
 
         <div class="input-group">
-          <label>Description</label>
-          <input type="text" id="description" placeholder="Enter description" />
+            <label>Description</label>
+            <input type="text" id="description" placeholder="Enter description">
         </div>
 
         <div class="input-group">
-          <label>Category</label>
-          <select id="category">
-            <option value="food">Food</option>
-            <option value="fuel">Fuel</option>
-            <option value="movies">Movies</option>
-          </select>
+            <label>Category</label>
+            <select id="category">
+                <option value="food">Food</option>
+                <option value="fuel">Fuel</option>
+                <option value="movies">Movies</option>
+            </select>
         </div>
 
         <button id="addBtn">Add Expense</button>
-      </div>
 
-      <!-- RIGHT SIDE : EXPENSE LIST -->
-
-      <div class="container">
-        <h2>Expense List</h2>
-        <ul id="expenseList"></ul>
-      </div>
     </div>
 
-    <!-- Script -->
-    <script src="expenses.js"></script>
-  </body>
+
+    <!-- EXPENSE LIST -->
+
+    <div class="card">
+
+        <h2>Expense List</h2>
+
+        <ul id="expenseList"></ul>
+
+    </div>
+
+</div>
+
+<script src="expenses.js"></script>
+
+</body>
 </html>

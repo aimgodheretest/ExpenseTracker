@@ -1,0 +1,161 @@
+css * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #121212;
+    min-height: 100vh;
+    padding: 30px 20px;
+}
+
+.title {
+    text-align: center;
+    color: #ffffff;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: #1e1e1e;
+    padding: 30px;
+    border-radius: 10px;
+    width: 350px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+}
+
+h2 {
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 25px;
+}
+
+.input-group {
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 6px;
+    color: #bbbbbb;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    background: #2c2c2c;
+    color: white;
+}
+
+input::placeholder {
+    color: #666666;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #2c2c2c inset !important;
+    -webkit-text-fill-color: white !important;
+    caret-color: white;
+}
+
+select option {
+    background: #2c2c2c;
+    color: white;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border: none;
+    background: #4CAF50;
+    color: white;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #45a049;
+}
+
+/* Expense List */
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background: #2c2c2c;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    color: #ffffff;
+    gap: 10px;
+}
+
+.expense-info {
+    flex: 1;
+}
+
+.expense-info span {
+    display: block;
+    font-size: 14px;
+    color: #bbbbbb;
+}
+
+.expense-info span:first-child {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.expense-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.expense-buttons button {
+    width: auto;
+    padding: 6px 10px;
+    margin-left: 0;
+    margin-top: 0;
+    font-size: 13px;
+}
+
+.edit-btn {
+    background: #4CAF50;
+}
+
+.edit-btn:hover {
+    background: #45a049;
+}
+
+.delete-btn {
+    background: #e53935;
+    color: white;
+}
+
+.delete-btn:hover {
+    background: #c62828;
+}
