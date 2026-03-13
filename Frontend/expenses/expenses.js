@@ -20,15 +20,22 @@ addBtn.addEventListener("click", async () => {
 
   const expense = { amount, description, category };
 
+  const token = localStorage.getItem("token");
+
   try {
     if (editId) {
       await axios.put(
         `http://localhost:3000/expense/edit-expense/${editId}`,
         expense,
+        {
+          headers: { Authorization: token },
+        },
       );
       editId = null;
     } else {
-      await axios.post("http://localhost:3000/expense/add-expense", expense);
+      await axios.post("http://localhost:3000/expense/add-expense", expense, {
+        headers: { Authorization: token },
+      });
     }
 
     clearInputs();
@@ -42,7 +49,11 @@ addBtn.addEventListener("click", async () => {
 
 async function renderExpenses() {
   try {
-    const res = await axios.get("http://localhost:3000/expense/get-expenses");
+    const token = localStorage.getItem("token");
+
+    const res = await axios.get("http://localhost:3000/expense/get-expenses", {
+      headers: { Authorization: token },
+    });
 
     expenseList.innerHTML = "";
 
@@ -75,7 +86,11 @@ async function renderExpenses() {
 
 async function deleteExpense(id) {
   try {
-    await axios.delete(`http://localhost:3000/expense/delete-expense/${id}`);
+    const token = localStorage.getItem("token");
+
+    await axios.delete(`http://localhost:3000/expense/delete-expense/${id}`, {
+      headers: { Authorization: token },
+    });
     renderExpenses();
   } catch (err) {
     console.log(err);

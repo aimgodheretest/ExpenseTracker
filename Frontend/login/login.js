@@ -19,7 +19,8 @@ form.addEventListener("submit", async function (e) {
     message.innerText = "Login Successful";
     message.style.color = "green";
 
-    // ✅ correct redirect
+    localStorage.setItem("token", response.data.token);
+    
     window.location.href = "../expenses/expenses.html";
   } catch (error) {
     message.innerText = error.response?.data?.message || "Login failed";
