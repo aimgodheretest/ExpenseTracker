@@ -77,4 +77,9 @@ const editExpense = async (req, res) => {
   }
 };
 
-module.exports = { addExpense, getExpenses, deleteExpense, editExpense };
+module.exports = {
+  addExpense,
+  getExpenses,
+  deleteExpense,
+  editExpense,
+};

@@ -1,6 +1,8 @@
 const axios = require("axios");
 const Order = require("../models/orderTable");
 const User = require("../models/usersTable");
+const Expense = require("../models/expenseTable");
+const sequelize = require("../utils/dbConnection");
 
 const CASHFREE_APP_ID = process.env.CASHFREE_APP_ID;
 const CASHFREE_SECRET_KEY = process.env.CASHFREE_SECRET_KEY;
@@ -71,5 +73,27 @@ const updateTransactionStatus = async (req, res) => {
     res.status(500).json(error);
   }
 };
+const showLeaderboard = async (req, res) => {
+  try {
+    const leaderboard = await Expense.findAll({
+      attributes: [
+        "userId",
+        [sequelize.fn("SUM", sequelize.col("amount")), "totalExpense"],
+      ],
+      group: ["userId"],
+      order: [[sequelize.literal("totalExpense"), "DESC"]],
+      include: [
+        {
+          model: User,
+          attributes: ["name"],
+        },
+      ],
+    });
 
-module.exports = { buyPremium, updateTransactionStatus };
+    res.status(200).json(leaderboard);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Error fetching leaderboard" });
+  }
+};
+module.exports = { buyPremium, updateTransactionStatus, showLeaderboard };

@@ -20,7 +20,8 @@ form.addEventListener("submit", async function (e) {
     message.style.color = "green";
 
     localStorage.setItem("token", response.data.token);
-    
+    localStorage.setItem("isPremium", response.data.isPremium);
+
     window.location.href = "../expenses/expenses.html";
   } catch (error) {
     message.innerText = error.response?.data?.message || "Login failed";

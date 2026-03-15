@@ -143,7 +143,22 @@ document.getElementById("premium-btn").onclick = async () => {
       }
 
       if (result.paymentDetails) {
-        alert("Transaction Successful");
+        const token = localStorage.getItem("token");
+
+        axios.post(
+          "http://localhost:3000/purchase/updatetransactionstatus",
+          {
+            orderId: response.data.orderId,
+            paymentId: result.paymentDetails.paymentId,
+          },
+          {
+            headers: { Authorization: token },
+          },
+        );
+
+        localStorage.setItem("isPremium", true);
+
+        showPremiumUserMessage();
       }
     });
   } catch (error) {
@@ -151,6 +166,51 @@ document.getElementById("premium-btn").onclick = async () => {
     alert("Payment creation failed");
   }
 };
-/* Page Load */
+function showPremiumUserMessage() {
+  const message = document.createElement("h3");
+  message.textContent = "You are a premium user now";
 
-document.addEventListener("DOMContentLoaded", renderExpenses);
+  document.body.insertBefore(message, document.body.firstChild);
+
+  const leaderboardBtn = document.createElement("button");
+  leaderboardBtn.textContent = "Show Leaderboard";
+  leaderboardBtn.onclick = showLeaderboard;
+
+  document.body.insertBefore(leaderboardBtn, message.nextSibling);
+}
+
+async function showLeaderboard() {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axios.get("http://localhost:3000/expense/leaderboard", {
+      headers: { Authorization: token },
+    });
+
+    const leaderBoard = document.getElementById("leaderboard");
+
+    leaderBoard.innerHTML = "";
+
+    res.data.forEach((user) => {
+      const li = document.createElement("li");
+
+      li.textContent = `Name - ${user.User.name} Total Expense - ${user.totalExpense}`;
+
+      leaderBoard.appendChild(li);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+/* Page Load */
+window.addEventListener("DOMContentLoaded", () => {
+  renderExpenses();
+
+  const isPremium = localStorage.getItem("isPremium");
+
+  if (isPremium === "true") {
+    showPremiumUserMessage();
+    showLeaderboard();
+  }
+});

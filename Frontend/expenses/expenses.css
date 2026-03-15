@@ -166,3 +166,41 @@ li {
     margin-left: auto;
     margin-right: 20px;
 }
+
+/* PREMIUM USER MESSAGE */
+
+body h3 {
+    color: #4CAF50;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    
+}
+
+/* SHOW LEADERBOARD BUTTON */
+
+body>button:first-of-type {
+    width: 15%;
+    max-width: 400px;
+    display: block;
+    margin: 10px auto 20px auto;
+    font-size: 18px;
+}
+
+/* LEADERBOARD CARD */
+
+.card ul#leaderboard li {
+    background: #2c2c2c;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 14px;
+    display: block;
+}
+
+/* LEADERBOARD TITLE */
+
+.card h2 {
+    letter-spacing: 1px;
+}

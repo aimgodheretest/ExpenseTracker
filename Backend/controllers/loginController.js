@@ -27,11 +27,15 @@ const loginUser = async (req, res) => {
     }
 
     //generate token
-    const token = jwt.sign({ userId: user.id }, "secretkey");
+    const token = jwt.sign(
+      { userId: user.id, isPremium: user.isPremium },
+      "secretkey",
+    );
 
     res.status(200).json({
       message: "User login successful",
-      token: token, //send token
+      token: token,
+      isPremium: user.isPremium,
     });
   } catch (error) {
     console.log(error);
