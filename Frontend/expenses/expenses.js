@@ -114,7 +114,43 @@ function clearInputs() {
   descInput.value = "";
   categoryInput.value = "food";
 }
+document.getElementById("premium-btn").onclick = async () => {
+  try {
+    const token = localStorage.getItem("token");
 
+    const response = await axios.post(
+      "http://localhost:3000/purchase/premium",
+      {},
+      {
+        headers: { Authorization: token },
+      },
+    );
+
+    const paymentSessionId = response.data.payment_session_id;
+
+    const cashfree = Cashfree({
+      mode: "sandbox",
+    });
+
+    let checkoutOptions = {
+      paymentSessionId: paymentSessionId,
+      redirectTarget: "_modal",
+    };
+
+    cashfree.checkout(checkoutOptions).then((result) => {
+      if (result.error) {
+        alert("TRANSACTION FAILED");
+      }
+
+      if (result.paymentDetails) {
+        alert("Transaction Successful");
+      }
+    });
+  } catch (error) {
+    console.log("CASHFREE ERROR --->", error.response?.data || error);
+    alert("Payment creation failed");
+  }
+};
 /* Page Load */
 
 document.addEventListener("DOMContentLoaded", renderExpenses);
