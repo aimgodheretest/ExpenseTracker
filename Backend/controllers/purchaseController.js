@@ -82,24 +82,39 @@ WHAT IT DOES:
 =========================================================
 */
 const updateTransactionStatus = async (req, res) => {
+  const sequelize = require("../utils/dbConnection");
+  const t = await sequelize.transaction();
+
   try {
-    // Get orderId and paymentId from frontend
     const { orderId, paymentId } = req.body;
 
-    // Update order status in Orders table
     await Order.update(
       {
         paymentId: paymentId,
         status: "SUCCESSFUL",
       },
-      { where: { orderId: orderId } },
+      {
+        where: { orderId: orderId },
+        transaction: t,
+      },
     );
 
-    // Mark the user as premium
-    await User.update({ isPremium: true }, { where: { id: req.user.id } });
+    await User.update(
+      { isPremium: true },
+      {
+        where: { id: req.user.id },
+        transaction: t,
+      },
+    );
 
-    res.status(200).json({ message: "Transaction Successful" });
+    await t.commit();
+
+    res.status(200).json({
+      message: "Transaction Successful",
+    });
   } catch (error) {
+    await t.rollback();
+
     res.status(500).json(error);
   }
 };

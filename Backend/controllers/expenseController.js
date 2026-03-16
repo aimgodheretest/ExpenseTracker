@@ -1,35 +1,43 @@
 const Expense = require("../models/expenseTable");
+const sequelize = require("../utils/dbConnection");
 const { getCategoryFromAI } = require("../utils/aiService");
 
-//CREATE EXPENSE
+// CREATE EXPENSE
 const addExpense = async (req, res) => {
+  const t = await sequelize.transaction();
+
   try {
     const { amount, description } = req.body;
 
-    // AI categorization
     const category = await getCategoryFromAI(description);
-    console.log("AI CATEGORY:", category);
 
-    const expense = await Expense.create({
-      amount,
-      description,
-      category,
-      userId: req.user.id, // attach logged in user
-    });
+    const expense = await Expense.create(
+      {
+        amount,
+        description,
+        category,
+        userId: req.user.id,
+      },
+      { transaction: t },
+    );
+
+    await t.commit();
 
     res.status(201).json(expense);
   } catch (error) {
+    await t.rollback();
+
     console.log(error);
     res.status(500).json({ message: "Error adding expense" });
   }
 };
 
-//GET ALL EXPENSES OF LOGGED IN USER
+// GET EXPENSES (NO TRANSACTION)
 const getExpenses = async (req, res) => {
   try {
     const expenses = await Expense.findAll({
       where: {
-        userId: req.user.id, // show only this user's expenses
+        userId: req.user.id,
       },
     });
 
@@ -39,28 +47,53 @@ const getExpenses = async (req, res) => {
   }
 };
 
-//DELETE EXPENSE
+// DELETE EXPENSE (FIXED WITH TRANSACTION)
 const deleteExpense = async (req, res) => {
+  const t = await sequelize.transaction();
+
   try {
     const id = req.params.id;
+
+    const expense = await Expense.findOne({
+      where: {
+        id,
+        userId: req.user.id,
+      },
+      transaction: t,
+    });
+
+    if (!expense) {
+      await t.rollback();
+
+      return res.status(404).json({
+        message: "Expense not found",
+      });
+    }
 
     await Expense.destroy({
       where: {
         id,
-        userId: req.user.id, // only owner can delete
+        userId: req.user.id,
       },
+      transaction: t,
     });
+
+    await t.commit();
 
     res.status(200).json({
       message: `Expense with id:${id} Deleted`,
     });
   } catch (error) {
+    await t.rollback();
+
     res.status(500).json(error);
   }
 };
 
-//EDIT EXPENSE
+// EDIT EXPENSE
 const editExpense = async (req, res) => {
+  const t = await sequelize.transaction();
+
   try {
     const { id } = req.params;
     const { amount, description } = req.body;
@@ -72,15 +105,20 @@ const editExpense = async (req, res) => {
       {
         where: {
           id,
-          userId: req.user.id, // only owner can edit
+          userId: req.user.id,
         },
+        transaction: t,
       },
     );
+
+    await t.commit();
 
     res.status(200).json({
       message: "Expense updated successfully",
     });
   } catch (error) {
+    await t.rollback();
+
     console.log(error);
     res.status(500).json(error);
   }

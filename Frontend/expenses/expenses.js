@@ -69,7 +69,7 @@ async function renderExpenses() {
       </div>
 
       <div class="expense-buttons">
-      <button class="edit-btn" onclick="editExpense(${expense.id},'${expense.amount}','${expense.description}','${expense.category}')">Edit</button>
+      <button class="edit-btn" onclick="editExpense(${expense.id}, ${expense.amount}, \`${expense.description}\`, \`${expense.category}\`)">Edit</button>
       <button class="delete-btn" onclick="deleteExpense(${expense.id})">Delete</button>
       </div>
 
