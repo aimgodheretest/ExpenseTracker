@@ -183,7 +183,7 @@ async function showLeaderboard() {
   try {
     const token = localStorage.getItem("token");
 
-    const res = await axios.get("http://localhost:3000/expense/leaderboard", {
+    const res = await axios.get("http://localhost:3000/premium/leaderboard", {
       headers: { Authorization: token },
     });
 

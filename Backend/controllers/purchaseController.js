@@ -1,8 +1,6 @@
 const axios = require("axios");
 const Order = require("../models/orderTable");
 const User = require("../models/usersTable");
-const Expense = require("../models/expenseTable");
-const sequelize = require("../utils/dbConnection");
 
 // Load Cashfree credentials from .env file
 const CASHFREE_APP_ID = process.env.CASHFREE_APP_ID;
@@ -106,45 +104,4 @@ const updateTransactionStatus = async (req, res) => {
   }
 };
 
-/*
-=========================================================
-FUNCTION: showLeaderboard
-WHEN IT RUNS:
-→ When premium user clicks "Show Leaderboard"
-
-WHAT IT DOES:
-1. Fetches total expenses of each user
-2. Uses SQL aggregation SUM(amount)
-3. Groups expenses by userId
-4. Joins Users table to get user name
-5. Sorts users in descending order of total expense
-=========================================================
-*/
-const showLeaderboard = async (req, res) => {
-  try {
-    const leaderboard = await Expense.findAll({
-      // Select userId and total expense
-      attributes: [
-        "userId",
-        [sequelize.fn("SUM", sequelize.col("amount")), "totalExpense"],
-      ],
-      // Group expenses by user
-      group: ["userId"],
-      // Sort leaderboard by highest spender
-      order: [[sequelize.literal("totalExpense"), "DESC"]],
-      // Join Users table to get user name
-      include: [
-        {
-          model: User,
-          attributes: ["name"],
-        },
-      ],
-    });
-
-    res.status(200).json(leaderboard);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Error fetching leaderboard" });
-  }
-};
-module.exports = { buyPremium, updateTransactionStatus, showLeaderboard };
+module.exports = { buyPremium, updateTransactionStatus };
