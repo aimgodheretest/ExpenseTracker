@@ -7,7 +7,7 @@ const expenseRouter = require("./routes/expenseRouter");
 const purchaseRouter = require("./routes/purchaseRouter");
 const premiumRouter = require("./routes/premiumRouter");
 const passwordRouter = require("./routes/password");
-
+const forgotPasswordRequest = require("./models/forgotPasswordTable");
 const cors = require("cors");
 
 const User = require("./models/usersTable");
@@ -20,6 +20,7 @@ const port = 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(signupRouter);
 app.use(loginRouter);
@@ -33,6 +34,9 @@ Expense.belongsTo(User, { foreignKey: "userId" });
 
 User.hasMany(Order);
 Order.belongsTo(User);
+
+User.hasMany(forgotPasswordRequest);
+forgotPasswordRequest.belongsTo(User);
 
 sequelize.sync().then(() => {
   console.log(`Tables Synced`);
