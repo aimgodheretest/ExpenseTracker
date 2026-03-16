@@ -174,18 +174,48 @@ body h3 {
     text-align: center;
     margin-top: 10px;
     margin-bottom: 10px;
-    
+
 }
 
 /* SHOW LEADERBOARD BUTTON */
 
 body>button:first-of-type {
     width: 15%;
+    min-width: 180px;
     max-width: 400px;
     display: block;
     margin: 10px auto 20px auto;
     font-size: 18px;
+    padding: 12px;
 }
+
+/* Tablet screens */
+
+@media (max-width: 1024px) {
+    body>button:first-of-type {
+        width: 30%;
+        font-size: 17px;
+    }
+}
+
+/* Mobile screens */
+
+@media (max-width: 768px) {
+    body>button:first-of-type {
+        width: 50%;
+        font-size: 16px;
+    }
+}
+
+/* Small mobile */
+
+@media (max-width: 480px) {
+    body>button:first-of-type {
+        width: 70%;
+        font-size: 15px;
+    }
+}
+
 
 /* LEADERBOARD CARD */
 

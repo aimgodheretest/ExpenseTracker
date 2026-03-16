@@ -1,9 +1,14 @@
 const Expense = require("../models/expenseTable");
+const { getCategoryFromAI } = require("../utils/aiService");
 
 //CREATE EXPENSE
 const addExpense = async (req, res) => {
   try {
-    const { amount, description, category } = req.body;
+    const { amount, description } = req.body;
+
+    // AI categorization
+    const category = await getCategoryFromAI(description);
+    console.log("AI CATEGORY:", category);
 
     const expense = await Expense.create({
       amount,
@@ -14,7 +19,8 @@ const addExpense = async (req, res) => {
 
     res.status(201).json(expense);
   } catch (error) {
-    res.status(500).json(error);
+    console.log(error);
+    res.status(500).json({ message: "Error adding expense" });
   }
 };
 
@@ -57,7 +63,9 @@ const deleteExpense = async (req, res) => {
 const editExpense = async (req, res) => {
   try {
     const { id } = req.params;
-    const { amount, description, category } = req.body;
+    const { amount, description } = req.body;
+
+    const category = await getCategoryFromAI(description);
 
     await Expense.update(
       { amount, description, category },
@@ -73,6 +81,7 @@ const editExpense = async (req, res) => {
       message: "Expense updated successfully",
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json(error);
   }
 };

@@ -18,7 +18,7 @@ addBtn.addEventListener("click", async () => {
     return;
   }
 
-  const expense = { amount, description, category };
+  const expense = { amount, description };
 
   const token = localStorage.getItem("token");
 
