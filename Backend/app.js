@@ -6,6 +6,8 @@ const loginRouter = require("./routes/loginRouter");
 const expenseRouter = require("./routes/expenseRouter");
 const purchaseRouter = require("./routes/purchaseRouter");
 const premiumRouter = require("./routes/premiumRouter");
+const passwordRouter = require("./routes/password");
+
 const cors = require("cors");
 
 const User = require("./models/usersTable");
@@ -24,6 +26,7 @@ app.use(loginRouter);
 app.use("/expense", expenseRouter);
 app.use(purchaseRouter);
 app.use("/premium", premiumRouter);
+app.use("/password", passwordRouter);
 
 User.hasMany(Expense, { foreignKey: "userId" });
 Expense.belongsTo(User, { foreignKey: "userId" });

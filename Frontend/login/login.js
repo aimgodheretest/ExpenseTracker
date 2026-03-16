@@ -28,3 +28,8 @@ form.addEventListener("submit", async function (e) {
     message.style.color = "red";
   }
 });
+
+// Forgot password button listener
+document.getElementById("forgotPasswordBtn").addEventListener("click", () => {
+  window.location.href = "../forgotPassword/forgotPassword.html";
+});
