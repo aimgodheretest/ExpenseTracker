@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Expense Report</title>
+  <link rel="stylesheet" href="report.css">
+</head>
+
+<body>
+
+<div class="report-container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <span class="generated-date" id="generatedDate"></span>
+    <h1>Day to Day Expenses</h1>
+    <h2 id="year">2026</h2>
+    <h3 id="month">March 2026</h3>
+  </div>
+
+  <!-- DOWNLOAD -->
+  <button id="downloadBtn" disabled>Download Report</button>
+
+  <!-- MAIN TABLE -->
+  <table class="main-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Description</th>
+        <th>Category</th>
+        <th>Income</th>
+        <th>Expense</th>
+      </tr>
+    </thead>
+
+    <tbody id="reportBody"></tbody>
+
+    <tfoot>
+      <tr class="subtotal">
+        <td colspan="3"></td>
+        <td id="subtotalIncome"></td>
+        <td id="subtotalExpense"></td>
+      </tr>
+
+      <tr class="grand-total">
+        <td colspan="3"></td>
+        <td id="totalIncome"></td>
+        <td id="totalExpense"></td>
+      </tr>
+
+      <tr class="savings">
+        <td colspan="5">
+          Savings = <span id="savings"></span>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <!-- YEARLY REPORT -->
+  <h3 class="section-title">Yearly Report</h3>
+
+  <table class="year-table">
+    <thead>
+      <tr>
+        <th>Month</th>
+        <th>Income</th>
+        <th>Expense</th>
+        <th>Savings</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td>March</td>
+        <td id="yearIncome"></td>
+        <td id="yearExpense"></td>
+        <td id="yearSavings"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- NOTES -->
+  <h3 class="section-title">Notes Report 2026</h3>
+
+  <table class="notes-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+
+    <tbody id="notesBody"></tbody>
+  </table>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="report.js"></script>
+
+</body>
+</html>
