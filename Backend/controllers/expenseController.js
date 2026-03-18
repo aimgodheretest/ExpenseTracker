@@ -35,13 +35,27 @@ const addExpense = async (req, res) => {
 // GET EXPENSES (NO TRANSACTION)
 const getExpenses = async (req, res) => {
   try {
-    const expenses = await Expense.findAll({
-      where: {
-        userId: req.user.id,
-      },
+    const page = Number(req.query.page) || 1;
+    const limit = 3;
+
+    const offset = (page - 1) * limit;
+
+    const { count, rows } = await Expense.findAndCountAll({
+      where: { userId: req.user.id },
+      limit: limit,
+      offset: offset,
+      order: [["createdAt", "DESC"]],
     });
 
-    res.status(200).json(expenses);
+    res.status(200).json({
+      expenses: rows,
+      currentPage: page,
+      hasNextPage: limit * page < count,
+      nextPage: page + 1,
+      hasPreviousPage: page > 1,
+      previousPage: page - 1,
+      lastPage: Math.ceil(count / limit),
+    });
   } catch (error) {
     res.status(500).json(error);
   }

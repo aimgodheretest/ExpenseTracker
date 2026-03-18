@@ -95,6 +95,11 @@ button:hover {
 }
 
 /* Expense List */
+#expenseList.scrollable {
+    max-height: 250px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
 
 ul {
     list-style: none;
@@ -233,4 +238,18 @@ body>button:first-of-type {
 
 .card h2 {
     letter-spacing: 1px;
+}
+
+
+#pagination {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+#pagination button {
+    width: auto;
+    padding: 6px 10px;
+    font-size: 14px;
 }

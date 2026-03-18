@@ -4,6 +4,7 @@ const categoryInput = document.getElementById("category");
 const addBtn = document.getElementById("addBtn");
 const expenseList = document.getElementById("expenseList");
 
+let currentPage = 1;
 let editId = null;
 
 /* Add Expense */
@@ -39,7 +40,7 @@ addBtn.addEventListener("click", async () => {
     }
 
     clearInputs();
-    renderExpenses();
+    renderExpenses(currentPage);
   } catch (err) {
     console.log(err);
   }
@@ -47,21 +48,35 @@ addBtn.addEventListener("click", async () => {
 
 /* Render Expenses */
 
-async function renderExpenses() {
+async function renderExpenses(page = 1) {
   try {
     const token = localStorage.getItem("token");
 
-    const res = await axios.get("http://localhost:3000/expense/get-expenses", {
-      headers: { Authorization: token },
-    });
+    const res = await axios.get(
+      `http://localhost:3000/expense/get-expenses?page=${page}`,
+      {
+        headers: { Authorization: token },
+      },
+    );
 
     expenseList.innerHTML = "";
+    expenseList.classList.remove("scrollable");
 
-    res.data.forEach((expense) => {
+    if (res.data.expenses.length === 0) {
+      expenseList.innerHTML =
+        "<p style='color:red ;text-align:center;'>No expenses found</p>";
+      showPagination(res.data); // keep pagination logic consistent
+      return; // stop further execution
+    }
+
+    if (res.data.expenses.length > 3) {
+      expenseList.classList.add("scrollable");
+    }
+
+    res.data.expenses.forEach((expense) => {
       const li = document.createElement("li");
 
       li.innerHTML = `
-      
       <div class="expense-info">
       <span><b>Amount:</b> ${expense.amount}</span>
       <span><b>Description:</b> ${expense.description}</span>
@@ -72,11 +87,14 @@ async function renderExpenses() {
       <button class="edit-btn" onclick="editExpense(${expense.id}, ${expense.amount}, \`${expense.description}\`, \`${expense.category}\`)">Edit</button>
       <button class="delete-btn" onclick="deleteExpense(${expense.id})">Delete</button>
       </div>
-
       `;
 
       expenseList.appendChild(li);
     });
+
+    // IMPORTANT
+    currentPage = res.data.currentPage;
+    showPagination(res.data);
   } catch (err) {
     console.log(err);
   }
@@ -91,7 +109,7 @@ async function deleteExpense(id) {
     await axios.delete(`http://localhost:3000/expense/delete-expense/${id}`, {
       headers: { Authorization: token },
     });
-    renderExpenses();
+    renderExpenses(currentPage);
   } catch (err) {
     console.log(err);
   }
@@ -202,10 +220,53 @@ async function showLeaderboard() {
     console.log(err);
   }
 }
+function showPagination(data) {
+  const paginationDiv = document.getElementById("pagination");
 
+  //  Hide if no data
+  if (!data.expenses || data.expenses.length === 0) {
+    paginationDiv.innerHTML = "";
+    return;
+  }
+
+  paginationDiv.innerHTML = "";
+
+  //  PREVIOUS BUTTON
+  if (data.hasPreviousPage) {
+    const prevBtn = document.createElement("button");
+    prevBtn.innerText = "Prev";
+    prevBtn.onclick = () => renderExpenses(data.previousPage);
+    paginationDiv.appendChild(prevBtn);
+  }
+
+  //  PAGE NUMBERS (MAIN LOGIC 🔥)
+  for (let i = 1; i <= data.lastPage; i++) {
+    const pageBtn = document.createElement("button");
+
+    pageBtn.innerText = i;
+
+    // Highlight current page
+    if (i === data.currentPage) {
+      pageBtn.disabled = true;
+      pageBtn.style.backgroundColor = "#065f15";
+    }
+
+    pageBtn.onclick = () => renderExpenses(i);
+
+    paginationDiv.appendChild(pageBtn);
+  }
+
+  //  NEXT BUTTON
+  if (data.hasNextPage) {
+    const nextBtn = document.createElement("button");
+    nextBtn.innerText = "Next";
+    nextBtn.onclick = () => renderExpenses(data.nextPage);
+    paginationDiv.appendChild(nextBtn);
+  }
+}
 /* Page Load */
 window.addEventListener("DOMContentLoaded", () => {
-  renderExpenses();
+  renderExpenses(1);
 
   const isPremium = localStorage.getItem("isPremium");
 
