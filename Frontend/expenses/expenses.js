@@ -6,6 +6,7 @@ const expenseList = document.getElementById("expenseList");
 
 let currentPage = 1;
 let editId = null;
+let limit = localStorage.getItem("limit") || 3;
 
 /* Add Expense */
 
@@ -53,7 +54,7 @@ async function renderExpenses(page = 1) {
     const token = localStorage.getItem("token");
 
     const res = await axios.get(
-      `http://localhost:3000/expense/get-expenses?page=${page}`,
+      `http://localhost:3000/expense/get-expenses?page=${page}&limit=${limit}`,
       {
         headers: { Authorization: token },
       },
@@ -63,10 +64,16 @@ async function renderExpenses(page = 1) {
     expenseList.classList.remove("scrollable");
 
     if (res.data.expenses.length === 0) {
+      // If page > 1, go back one page automatically
+      if (page > 1) {
+        renderExpenses(page - 1);
+        return;
+      }
+
       expenseList.innerHTML =
         "<p style='color:red ;text-align:center;'>No expenses found</p>";
-      showPagination(res.data); // keep pagination logic consistent
-      return; // stop further execution
+      showPagination(res.data);
+      return;
     }
 
     if (res.data.expenses.length > 3) {
@@ -109,7 +116,11 @@ async function deleteExpense(id) {
     await axios.delete(`http://localhost:3000/expense/delete-expense/${id}`, {
       headers: { Authorization: token },
     });
-    renderExpenses(currentPage);
+    if (currentPage > 1) {
+      renderExpenses(currentPage - 1);
+    } else {
+      renderExpenses(1);
+    }
   } catch (err) {
     console.log(err);
   }
@@ -263,6 +274,20 @@ function showPagination(data) {
     nextBtn.onclick = () => renderExpenses(data.nextPage);
     paginationDiv.appendChild(nextBtn);
   }
+}
+const limitSelect = document.getElementById("limitSelect");
+
+// set saved value
+if (limitSelect) {
+  limitSelect.value = limit;
+
+  limitSelect.addEventListener("change", () => {
+    limit = limitSelect.value;
+
+    localStorage.setItem("limit", limit);
+
+    renderExpenses(1);
+  });
 }
 /* Page Load */
 window.addEventListener("DOMContentLoaded", () => {

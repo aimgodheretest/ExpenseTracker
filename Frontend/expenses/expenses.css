@@ -253,3 +253,9 @@ body>button:first-of-type {
     padding: 6px 10px;
     font-size: 14px;
 }
+
+#limitSelect {
+    margin-left: 10px;
+    padding: 5px;
+    border-radius: 5px;
+}

@@ -43,6 +43,15 @@
 
       <div class="card">
         <h2>Expense List</h2>
+        <div style="margin-bottom: 10px">
+          <label style="color: white">Items per page:</label>
+          <select id="limitSelect">
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+          </select>
+        </div>
         <ul id="expenseList"></ul>
         <div id="pagination"></div>
       </div>
