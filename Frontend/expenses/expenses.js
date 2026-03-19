@@ -3,6 +3,7 @@ const descInput = document.getElementById("description");
 const categoryInput = document.getElementById("category");
 const addBtn = document.getElementById("addBtn");
 const expenseList = document.getElementById("expenseList");
+const noteInput = document.getElementById("note");
 
 let currentPage = 1;
 let editId = null;
@@ -13,14 +14,15 @@ let limit = localStorage.getItem("limit") || 3;
 addBtn.addEventListener("click", async () => {
   const amount = amountInput.value;
   const description = descInput.value;
-  const category = categoryInput.value;
+  // const category = categoryInput.value;
+  const note = noteInput.value;
 
   if (!amount || !description) {
     alert("Please fill all fields");
     return;
   }
 
-  const expense = { amount, description };
+  const expense = { amount, description, note };
 
   const token = localStorage.getItem("token");
 
@@ -88,10 +90,11 @@ async function renderExpenses(page = 1) {
       <span><b>Amount:</b> ${expense.amount}</span>
       <span><b>Description:</b> ${expense.description}</span>
       <span><b>Category:</b> ${expense.category}</span>
+      <span><b>Note:</b> ${expense.note || "No note"}</span>
       </div>
 
       <div class="expense-buttons">
-      <button class="edit-btn" onclick="editExpense(${expense.id}, ${expense.amount}, \`${expense.description}\`, \`${expense.category}\`)">Edit</button>
+      <button class="edit-btn" onclick="editExpense(${expense.id}, ${expense.amount}, \`${expense.description}\`, \`${expense.category}\`, \`${expense.note || ""}\`)">Edit</button>
       <button class="delete-btn" onclick="deleteExpense(${expense.id})">Delete</button>
       </div>
       `;
@@ -128,10 +131,11 @@ async function deleteExpense(id) {
 
 /* Edit Expense */
 
-function editExpense(id, amount, description, category) {
+function editExpense(id, amount, description, category, note) {
   amountInput.value = amount;
   descInput.value = description;
   categoryInput.value = category;
+  noteInput.value = note;
 
   editId = id;
 }
@@ -142,6 +146,7 @@ function clearInputs() {
   amountInput.value = "";
   descInput.value = "";
   categoryInput.value = "food";
+  noteInput.value = "";
 }
 document.getElementById("premium-btn").onclick = async () => {
   try {

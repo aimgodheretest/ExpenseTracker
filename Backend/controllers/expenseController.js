@@ -7,7 +7,7 @@ const addExpense = async (req, res) => {
   const t = await sequelize.transaction();
 
   try {
-    const { amount, description } = req.body;
+    const { amount, description, note } = req.body;
 
     const category = await getCategoryFromAI(description);
 
@@ -16,6 +16,7 @@ const addExpense = async (req, res) => {
         amount,
         description,
         category,
+        note,
         userId: req.user.id,
       },
       { transaction: t },
@@ -110,12 +111,12 @@ const editExpense = async (req, res) => {
 
   try {
     const { id } = req.params;
-    const { amount, description } = req.body;
+    const { amount, description, note } = req.body;
 
     const category = await getCategoryFromAI(description);
 
     await Expense.update(
-      { amount, description, category },
+      { amount, description, category, note },
       {
         where: {
           id,
