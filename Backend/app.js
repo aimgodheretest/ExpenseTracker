@@ -1,4 +1,6 @@
 require("dotenv").config();
+const path = require("path");
+const fs = require("fs");
 const express = require("express");
 const sequelize = require("./utils/dbConnection");
 const signupRouter = require("./routes/signupRouter");
@@ -10,15 +12,25 @@ const passwordRouter = require("./routes/password");
 const forgotPasswordRequest = require("./models/forgotPasswordTable");
 const reportRouter = require("./routes/reportRouter");
 const cors = require("cors");
+const compression = require("compression");
+const morgan = require("morgan");
 
 const User = require("./models/usersTable");
 const Expense = require("./models/expenseTable");
-
 const Order = require("./models/orderTable");
 
 const app = express();
 const port = 3000;
 
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, "access.log"),
+  {
+    flags: "a",
+  },
+);
+
+app.use(compression());
+app.use(morgan("combined", { stream: accessLogStream }));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
