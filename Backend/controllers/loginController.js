@@ -6,18 +6,16 @@ const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({
-      where: { email },
-    });
+    // Find user by email
+    const user = await User.findOne({ email });
 
-    // user not found
     if (!user) {
       return res.status(404).json({
         message: "User not found",
       });
     }
 
-    // password check
+    // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
@@ -26,19 +24,23 @@ const loginUser = async (req, res) => {
       });
     }
 
-    //generate token
+    // Generate JWT
     const token = jwt.sign(
-      { userId: user.id, isPremium: user.isPremium },
+      {
+        userId: user._id,
+        isPremium: user.isPremium,
+      },
       "secretkey",
     );
 
     res.status(200).json({
       message: "User login successful",
-      token: token,
+      token,
       isPremium: user.isPremium,
     });
   } catch (error) {
     console.log(error);
+
     res.status(500).json({
       message: "Login error",
     });

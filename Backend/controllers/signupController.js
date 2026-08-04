@@ -5,20 +5,19 @@ const addUsers = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    // check existing user
-    const existingUser = await User.findOne({
-      where: { email },
-    });
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
 
     if (existingUser) {
       return res.status(400).json({
         message: "User already exists",
       });
     }
-    // hash password
+
+    // Hash password
     const hashPassword = await bcrypt.hash(password, 10);
 
-    // create user
+    // Create user
     const newUser = await User.create({
       name,
       email,
@@ -31,6 +30,7 @@ const addUsers = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+
     res.status(500).json({
       message: "Error creating user",
     });

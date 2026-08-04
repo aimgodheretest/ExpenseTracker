@@ -94,8 +94,8 @@ async function renderExpenses(page = 1) {
       </div>
 
       <div class="expense-buttons">
-      <button class="edit-btn" onclick="editExpense(${expense.id}, ${expense.amount}, \`${expense.description}\`, \`${expense.category}\`, \`${expense.note || ""}\`)">Edit</button>
-      <button class="delete-btn" onclick="deleteExpense(${expense.id})">Delete</button>
+      <button class="edit-btn" onclick="editExpense('${expense._id}', ${expense.amount}, \`${expense.description}\`, \`${expense.category}\`, \`${expense.note || ""}\`)">Edit</button>
+      <button class="delete-btn" onclick="deleteExpense('${expense._id}')">Delete</button>
       </div>
       `;
 
@@ -112,11 +112,11 @@ async function renderExpenses(page = 1) {
 
 /* Delete Expense */
 
-async function deleteExpense(id) {
+async function deleteExpense(_id) {
   try {
     const token = localStorage.getItem("token");
 
-    await axios.delete(`http://localhost:3000/expense/delete-expense/${id}`, {
+    await axios.delete(`http://localhost:3000/expense/delete-expense/${_id}`, {
       headers: { Authorization: token },
     });
     if (currentPage > 1) {
@@ -231,7 +231,7 @@ async function showLeaderboard() {
     res.data.forEach((user) => {
       const li = document.createElement("li");
 
-      li.textContent = `Name - ${user.User.name} Total Expense - ${user.totalExpense}`;
+      li.textContent = `Name - ${user.name} Total Expense - ${user.totalExpense}`;
 
       leaderBoard.appendChild(li);
     });

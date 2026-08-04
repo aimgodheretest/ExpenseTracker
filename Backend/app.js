@@ -2,22 +2,17 @@ require("dotenv").config();
 const path = require("path");
 const fs = require("fs");
 const express = require("express");
-const sequelize = require("./utils/dbConnection");
+const connectDB = require("./utils/db");
 const signupRouter = require("./routes/signupRouter");
 const loginRouter = require("./routes/loginRouter");
 const expenseRouter = require("./routes/expenseRouter");
 const purchaseRouter = require("./routes/purchaseRouter");
 const premiumRouter = require("./routes/premiumRouter");
 const passwordRouter = require("./routes/password");
-const forgotPasswordRequest = require("./models/forgotPasswordTable");
 const reportRouter = require("./routes/reportRouter");
 const cors = require("cors");
 const compression = require("compression");
 const morgan = require("morgan");
-
-const User = require("./models/usersTable");
-const Expense = require("./models/expenseTable");
-const Order = require("./models/orderTable");
 
 const app = express();
 const port = 3000;
@@ -43,17 +38,7 @@ app.use("/premium", premiumRouter);
 app.use("/password", passwordRouter);
 app.use(reportRouter);
 
-User.hasMany(Expense, { foreignKey: "userId" });
-Expense.belongsTo(User, { foreignKey: "userId" });
-
-User.hasMany(Order);
-Order.belongsTo(User);
-
-User.hasMany(forgotPasswordRequest);
-forgotPasswordRequest.belongsTo(User);
-
-sequelize.sync().then(() => {
-  console.log(`Tables Synced`);
+connectDB().then(() => {
   app.listen(port, () => {
     console.log(`Server is Running on port:http://localhost:${port}`);
   });

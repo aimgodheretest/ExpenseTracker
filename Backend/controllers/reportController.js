@@ -1,12 +1,11 @@
 const Expense = require("../models/expenseTable");
-const { Op } = require("sequelize");
 
 const getReport = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user._id;
     const type = req.query.type || "monthly";
 
-    let whereClause = { userId };
+    let whereClause = { user: userId };
 
     if (type === "monthly") {
       const now = new Date();
@@ -15,21 +14,25 @@ const getReport = async (req, res) => {
       const end = new Date(now.getFullYear(), now.getMonth() + 1, 1);
 
       whereClause.createdAt = {
-        [Op.gte]: start,
-        [Op.lt]: end,
+        $gte: start,
+        $lt: end,
       };
     }
 
-    const expenses = await Expense.findAll({
-      where: whereClause,
-      order: [["createdAt", "DESC"]],
+    const expenses = await Expense.find(whereClause).sort({
+      createdAt: -1,
     });
 
     res.status(200).json(expenses);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: "Failed to fetch report" });
+
+    res.status(500).json({
+      message: "Failed to fetch report",
+    });
   }
 };
 
-module.exports = { getReport };
+module.exports = {
+  getReport,
+};

@@ -1,42 +1,40 @@
 const User = require("../models/usersTable");
+const ForgotPassword = require("../models/forgotPasswordTable");
 const bcrypt = require("bcrypt");
-const ForgotPasswordRequests = require("../models/forgotPasswordTable");
-
 const sib = require("sib-api-v3-sdk");
-const uuid = require("uuid");
 
+// ===============================
+// Forgot Password
+// ===============================
 const forgotPassword = async (req, res) => {
   try {
-    console.log("Forgot password API called");
     const { email } = req.body;
 
-    const user = await User.findOne({ where: { email } });
+    // Find User
+    const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({
+        message: "User not found",
+      });
     }
 
-    const request = await ForgotPasswordRequests.create({
-      id: uuid.v4(),
+    // Create Reset Request
+    const request = await ForgotPassword.create({
       isActive: true,
-      UserId: user.id,
+      user: user._id,
     });
 
-    const resetLink = `http://localhost:3000/password/resetpassword/${request.id}`;
+    const resetLink = `http://localhost:3000/password/resetpassword/${request._id}`;
 
-    console.log("Generated Reset Link:", resetLink);
-    console.log("Sending reset email to:", email);
-
-    /* Brevo configuration */
+    // Brevo Configuration
     const client = sib.ApiClient.instance;
     const apiKey = client.authentications["api-key"];
     apiKey.apiKey = process.env.BREVO_API_KEY;
 
     const tranEmailApi = new sib.TransactionalEmailsApi();
 
-    /* Send Email */
-
-    const data = await tranEmailApi.sendTransacEmail({
+    await tranEmailApi.sendTransacEmail({
       sender: {
         email: "murlik784@gmail.com",
         name: "Expense Tracker",
@@ -49,10 +47,8 @@ const forgotPassword = async (req, res) => {
       htmlContent: `<a href="${resetLink}">Click here to reset password</a>`,
     });
 
-    console.log("Brevo response:", data);
-
     res.status(200).json({
-      message: "Reset link sent to email",
+      message: "Reset link sent successfully",
     });
   } catch (error) {
     console.log(error);
@@ -63,59 +59,68 @@ const forgotPassword = async (req, res) => {
   }
 };
 
+// ===============================
+// Show Reset Password Page
+// ===============================
 const getResetPassword = async (req, res) => {
-  const id = req.params.id;
+  try {
+    const { id } = req.params;
 
-  const request = await ForgotPasswordRequests.findOne({
-    where: { id },
-  });
+    const request = await ForgotPassword.findById(id);
 
-  if (request && request.isActive) {
+    if (!request || !request.isActive) {
+      return res.status(400).send("Invalid or expired reset link");
+    }
+
     res.send(`
-<html>
-<body>
+      <html>
+        <body>
+          <form action="/password/updatepassword/${id}" method="POST">
+            <label>Enter New Password</label>
+            <input type="password" name="newpassword" required />
+            <button type="submit">Reset Password</button>
+          </form>
+        </body>
+      </html>
+    `);
+  } catch (error) {
+    console.log(error);
 
-<form action="/password/updatepassword/${id}" method="POST">
-
-<label>Enter New Password</label>
-<input type="password" name="newpassword" required/>
-
-<button type="submit">Reset Password</button>
-
-</form>
-
-</body>
-</html>
-`);
+    res.status(500).send("Something went wrong");
   }
 };
 
+// ===============================
+// Update Password
+// ===============================
 const updatePassword = async (req, res) => {
   try {
-    const id = req.params.id;
+    const { id } = req.params;
     const { newpassword } = req.body;
 
-    const request = await ForgotPasswordRequests.findOne({
-      where: { id },
-    });
+    const request = await ForgotPassword.findById(id);
 
-    if (!request) {
-      return res.status(404).json({ message: "Invalid request" });
+    if (!request || !request.isActive) {
+      return res.status(404).json({
+        message: "Invalid request",
+      });
     }
 
-    const user = await User.findOne({
-      where: { id: request.UserId },
-    });
+    const user = await User.findById(request.user);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
 
     const hashedPassword = await bcrypt.hash(newpassword, 10);
 
-    await user.update({
-      password: hashedPassword,
-    });
+    user.password = hashedPassword;
+    await user.save();
 
-    await request.update({
-      isActive: false,
-    });
+    request.isActive = false;
+    await request.save();
 
     res.send("Password updated successfully");
   } catch (error) {
@@ -126,4 +131,9 @@ const updatePassword = async (req, res) => {
     });
   }
 };
-module.exports = { forgotPassword, getResetPassword, updatePassword };
+
+module.exports = {
+  forgotPassword,
+  getResetPassword,
+  updatePassword,
+};
