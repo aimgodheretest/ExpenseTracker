@@ -200,6 +200,9 @@ document.getElementById("premium-btn").onclick = async () => {
     alert("Payment creation failed");
   }
 };
+document.getElementById("report-btn").addEventListener("click", () => {
+  window.location.href = "../report/report.html";
+});
 function showPremiumUserMessage() {
   const message = document.createElement("h3");
   message.textContent = "You are a premium user now";

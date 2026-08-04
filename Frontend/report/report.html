@@ -1,96 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Expense Report</title>
+  <meta charset="UTF-8">
+  <title>Expense Reports</title>
   <link rel="stylesheet" href="report.css">
 </head>
-
 <body>
+
+<h1 class="title">Expense Reports</h1>
 
 <div class="report-container">
 
-  <!-- HEADER -->
-  <div class="header">
-    <span class="generated-date" id="generatedDate"></span>
-    <h1>Day to Day Expenses</h1>
-    <h2 id="year">2026</h2>
-    <h3 id="month">March 2026</h3>
+  <div class="summary-card">
+    <h2>Summary</h2>
+
+    <div class="summary-box">
+      <p>Total Income : ₹<span id="totalIncome">0</span></p>
+      <p>Total Expense : ₹<span id="totalExpense">0</span></p>
+      <p>Savings : ₹<span id="totalSavings">0</span></p>
+    </div>
   </div>
 
-  <!-- DOWNLOAD -->
-  <button id="downloadBtn" disabled>Download Report</button>
+  <div class="filter-card">
+    <h2>Filter Reports</h2>
 
-  <!-- MAIN TABLE -->
-  <table class="main-table">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Description</th>
-        <th>Category</th>
-        <th>Income</th>
-        <th>Expense</th>
-      </tr>
-    </thead>
+    <select id="reportFilter">
+      <option value="daily">Daily</option>
+      <option value="weekly">Weekly</option>
+      <option value="monthly">Monthly</option>
+    </select>
 
-    <tbody id="reportBody"></tbody>
+    <button id="downloadBtn">
+      Download Report
+    </button>
+  </div>
 
-    <tfoot>
-      <tr class="subtotal">
-        <td colspan="3"></td>
-        <td id="subtotalIncome"></td>
-        <td id="subtotalExpense"></td>
-      </tr>
+  <div class="report-card">
+    <h2>Transactions</h2>
 
-      <tr class="grand-total">
-        <td colspan="3"></td>
-        <td id="totalIncome"></td>
-        <td id="totalExpense"></td>
-      </tr>
-
-      <tr class="savings">
-        <td colspan="5">
-          Savings = <span id="savings"></span>
-        </td>
-      </tr>
-    </tfoot>
-  </table>
-
-  <!-- YEARLY REPORT -->
-  <h3 class="section-title">Yearly Report</h3>
-
-  <table class="year-table">
-    <thead>
-      <tr>
-        <th>Month</th>
-        <th>Income</th>
-        <th>Expense</th>
-        <th>Savings</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr>
-        <td>March</td>
-        <td id="yearIncome"></td>
-        <td id="yearExpense"></td>
-        <td id="yearSavings"></td>
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- NOTES -->
-  <h3 class="section-title">Notes Report 2026</h3>
-
-  <table class="notes-table">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Notes</th>
-      </tr>
-    </thead>
-
-    <tbody id="notesBody"></tbody>
-  </table>
+    <ul id="reportList"></ul>
+  </div>
 
 </div>
 

@@ -259,3 +259,14 @@ body>button:first-of-type {
     padding: 5px;
     border-radius: 5px;
 }
+
+#report-btn {
+    width: 250px;
+    display: block;
+    margin: 10px auto;
+    background: #2196F3;
+}
+
+#report-btn:hover {
+    background: #1976D2;
+}

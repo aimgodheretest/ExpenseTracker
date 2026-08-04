@@ -1,105 +1,73 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 body {
     background: #121212;
     color: white;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
+    padding: 30px;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 30px;
 }
 
 .report-container {
-    max-width: 1000px;
-    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
 }
 
-/* HEADER */
-.header {
-    text-align: center;
-    position: relative;
+.summary-card,
+.filter-card,
+.report-card {
+    background: #1e1e1e;
+    padding: 25px;
+    border-radius: 10px;
+    width: 350px;
 }
 
-.generated-date {
-    position: absolute;
-    left: 0;
-    top: 0;
-    font-size: 12px;
-    color: #94a3b8;
+.summary-box p {
+    margin-bottom: 12px;
 }
 
-h1 {
-    color: #22c55e;
-    margin-bottom: 5px;
-}
-
-h2,
-h3 {
-    margin: 0;
-    color: #cbd5f5;
-}
-
-/* DOWNLOAD */
-#downloadBtn {
-    display: block;
-    margin: 15px auto;
-    padding: 8px 20px;
-    background: #22c55e;
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    background: #2c2c2c;
+    color: white;
     border: none;
-    border-radius: 5px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background: #4CAF50;
+    color: white;
     cursor: pointer;
 }
 
-#downloadBtn:disabled {
-    background: gray;
+button:disabled {
+    background: #555;
+    cursor: not-allowed;
 }
 
-/* TABLE BASE */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
+#reportList {
+    list-style: none;
 }
 
-th {
-    background: #22c55e;
-    color: black;
-    padding: 10px;
-    border: 1px solid #334155;
-}
-
-td {
-    padding: 8px;
-    text-align: center;
-    border: 1px solid #334155;
-    background: #0f172a;
-}
-
-tr:nth-child(even) td {
-    background: #020617;
-}
-
-/* TOTAL STYLING */
-.subtotal td {
-    background: #064e3b;
-}
-
-.grand-total td {
-    background: #065f46;
-    font-weight: bold;
-}
-
-.savings td {
-    text-align: right;
-    color: #22c55e;
-    font-weight: bold;
-}
-
-/* SECTIONS */
-.section-title {
-    margin-top: 30px;
-    color: #22c55e;
-}
-
-/* SMALL TABLES */
-.year-table td,
-.notes-table td {
-    font-size: 14px;
+#reportList li {
+    background: #2c2c2c;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 6px;
 }

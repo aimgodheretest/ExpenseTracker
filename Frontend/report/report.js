@@ -1,102 +1,130 @@
-const tableBody = document.getElementById("reportBody");
-const token = localStorage.getItem("token");
+const reportList = document.getElementById("reportList");
+const reportFilter = document.getElementById("reportFilter");
 
-const isPremiumUser = localStorage.getItem("isPremium") === "true";
+const totalIncome = document.getElementById("totalIncome");
+const totalExpense = document.getElementById("totalExpense");
+const totalSavings = document.getElementById("totalSavings");
+
 const downloadBtn = document.getElementById("downloadBtn");
 
-downloadBtn.disabled = !isPremiumUser;
+let reportData = [];
 
-/* DATE */
-document.getElementById("generatedDate").innerText =
-  new Date().toLocaleString();
-
-/* FETCH DATA */
-async function fetchReport() {
+async function loadReports() {
   try {
-    const res = await axios.get("http://localhost:3000/report?type=monthly", {
-      headers: { Authorization: token },
-    });
+    const token = localStorage.getItem("token");
 
-    renderData(res.data);
+    const res = await axios.get(
+      "http://localhost:3000/expense/get-expenses?page=1&limit=1000",
+      {
+        headers: {
+          Authorization: token,
+        },
+      },
+    );
+    console.log(res.data.expenses);
+
+    reportData = res.data.expenses;
+
+    renderReports();
   } catch (err) {
     console.log(err);
   }
 }
 
-/* RENDER */
-function renderData(data) {
-  tableBody.innerHTML = "";
+function renderReports() {
+  reportList.innerHTML = "";
 
-  let totalIncome = 0;
-  let totalExpense = 0;
+  let filtered = [...reportData];
 
-  data.forEach((item) => {
-    const isIncome = item.category === "Salary";
+  const filter = reportFilter.value;
 
-    const row = document.createElement("tr");
+  const today = new Date();
 
-    row.innerHTML = `
-      <td>${new Date(item.createdAt).toLocaleDateString()}</td>
-      <td>${item.description}</td>
-      <td>${item.category}</td>
-      <td>${isIncome ? item.amount : ""}</td>
-      <td>${!isIncome ? item.amount : ""}</td>
+  if (filter === "daily") {
+    filtered = reportData.filter((expense) => {
+      const expenseDate = new Date(expense.createdAt);
+
+      return (
+        expenseDate.getDate() === today.getDate() &&
+        expenseDate.getMonth() === today.getMonth() &&
+        expenseDate.getFullYear() === today.getFullYear()
+      );
+    });
+  }
+
+  if (filter === "weekly") {
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(today.getDate() - 7);
+
+    filtered = reportData.filter((expense) => {
+      return new Date(expense.createdAt) >= sevenDaysAgo;
+    });
+  }
+
+  if (filter === "monthly") {
+    filtered = reportData.filter((expense) => {
+      const expenseDate = new Date(expense.createdAt);
+
+      return (
+        expenseDate.getMonth() === today.getMonth() &&
+        expenseDate.getFullYear() === today.getFullYear()
+      );
+    });
+  }
+
+  let expenseTotal = 0;
+
+  filtered.forEach((expense) => {
+    expenseTotal += Number(expense.amount);
+
+    const li = document.createElement("li");
+
+    li.innerHTML = `
+      <strong>Amount:</strong> ₹${expense.amount}<br>
+      <strong>Description:</strong> ${expense.description}<br>
+      <strong>Category:</strong> ${expense.category}<br>
+      <strong>Date:</strong> ${new Date(expense.createdAt).toLocaleDateString()}
     `;
 
-    if (isIncome) totalIncome += item.amount;
-    else totalExpense += item.amount;
-
-    tableBody.appendChild(row);
+    reportList.appendChild(li);
   });
 
-  document.getElementById("subtotalIncome").innerText = totalIncome;
-  document.getElementById("subtotalExpense").innerText = totalExpense;
-
-  document.getElementById("totalIncome").innerText = "₹ " + totalIncome;
-  document.getElementById("totalExpense").innerText = "₹ " + totalExpense;
-
-  const savings = totalIncome - totalExpense;
-  document.getElementById("savings").innerText = "₹ " + savings;
-
-  /* YEARLY */
-  document.getElementById("yearIncome").innerText = "₹ " + totalIncome;
-  document.getElementById("yearExpense").innerText = "₹ " + totalExpense;
-  document.getElementById("yearSavings").innerText = "₹ " + savings;
-
-  /* NOTES (STATIC) */
-  const notesBody = document.getElementById("notesBody");
-  notesBody.innerHTML = `
-    <tr><td>11-03-2026</td><td>Advance given</td></tr>
-    <tr><td>12-03-2026</td><td>Travel expense</td></tr>
-  `;
+  totalIncome.textContent = 0;
+  totalExpense.textContent = expenseTotal;
+  totalSavings.textContent = -expenseTotal;
 }
 
-/* DOWNLOAD CSV */
-downloadBtn.addEventListener("click", async () => {
-  const res = await axios.get("http://localhost:3000/report?type=monthly", {
-    headers: { Authorization: token },
+reportFilter.addEventListener("change", renderReports);
+
+const isPremium = localStorage.getItem("isPremium");
+
+if (isPremium !== "true") {
+  downloadBtn.disabled = true;
+  downloadBtn.textContent = "Premium Feature";
+}
+
+downloadBtn.addEventListener("click", () => {
+  const content = reportData
+    .map(
+      (e) =>
+        `Amount: ${e.amount}, Description: ${e.description}, Category: ${e.category}`,
+    )
+    .join("\n");
+
+  const blob = new Blob([content], {
+    type: "text/plain",
   });
 
-  let csv = "Date,Description,Category,Income,Expense\n";
-
-  res.data.forEach((item) => {
-    const isIncome = item.category === "Salary";
-
-    csv += `${new Date(item.createdAt).toLocaleDateString()},
-    ${item.description},
-    ${item.category},
-    ${isIncome ? item.amount : ""},
-    ${!isIncome ? item.amount : ""}\n`;
-  });
-
-  const blob = new Blob([csv], { type: "text/csv" });
-  const url = window.URL.createObjectURL(blob);
+  const url = URL.createObjectURL(blob);
 
   const a = document.createElement("a");
+
   a.href = url;
-  a.download = "report.csv";
+  a.download = "expense-report.txt";
+
   a.click();
+
+  URL.revokeObjectURL(url);
 });
 
-/* INIT */
-fetchReport();
+loadReports();
