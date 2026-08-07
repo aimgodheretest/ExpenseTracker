@@ -1,8 +1,13 @@
+import AuthLayout from "../components/auth/AuthLayout";
+import AuthHero from "../components/auth/AuthHero";
+import RegisterCard from "../components/auth/RegisterCard";
 
 function Register() {
   return (
-    <div>Register</div>
-  )
+    <AuthLayout left={<AuthHero />}>
+      <RegisterCard />
+    </AuthLayout>
+  );
 }
 
-export default Register
+export default Register;

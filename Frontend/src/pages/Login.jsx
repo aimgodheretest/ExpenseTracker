@@ -1,8 +1,12 @@
-
+import AuthHero from "../components/auth/AuthHero";
+import AuthLayout from "../components/auth/AuthLayout";
+import LoginCard from "../components/auth/LoginCard";
 function Login() {
   return (
-    <div>Login</div>
-  )
+    <AuthLayout left={<AuthHero />}>
+      <LoginCard />
+    </AuthLayout>
+  );
 }
 
-export default Login
+export default Login;
