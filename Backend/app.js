@@ -5,6 +5,7 @@ const express = require("express");
 const connectDB = require("./utils/db");
 const signupRouter = require("./routes/signupRouter");
 const loginRouter = require("./routes/loginRouter");
+const dashboardRouter = require("./routes/dashboardRouter");
 const expenseRouter = require("./routes/expenseRouter");
 const purchaseRouter = require("./routes/purchaseRouter");
 const premiumRouter = require("./routes/premiumRouter");
@@ -32,6 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(signupRouter);
 app.use(loginRouter);
+app.use(dashboardRouter);
 app.use("/expense", expenseRouter);
 app.use(purchaseRouter);
 app.use("/premium", premiumRouter);
