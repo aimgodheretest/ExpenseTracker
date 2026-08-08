@@ -47,7 +47,7 @@ function RegisterCard() {
 
   return (
     <div className="w-full max-w-lg rounded-3xl border border-zinc-800 bg-zinc-900/90 p-6 shadow-2xl backdrop-blur">
-      <h1 className="text-4xl font-bold text-white">Create Account 🚀</h1>
+      <h1 className="text-3xl font-bold text-white">Create Account 🚀</h1>
 
       <p className="mt-3 text-zinc-400">Start managing your finances today.</p>
 
@@ -60,7 +60,7 @@ function RegisterCard() {
             <User size={18} className="text-zinc-500" />
 
             <input
-              className="w-full bg-transparent px-4 py-3 text-white outline-none"
+              className="w-full bg-transparent px-3 py-3 text-white outline-none"
               placeholder="Enter your name"
               {...register("name", {
                 required: "Name is required",
@@ -82,7 +82,7 @@ function RegisterCard() {
 
             <input
               type="email"
-              className="w-full bg-transparent px-4 py-3 text-white outline-none"
+              className="w-full bg-transparent px-3 py-3 text-white outline-none"
               placeholder="Enter your email"
               {...register("email", {
                 required: "Email is required",
@@ -104,7 +104,7 @@ function RegisterCard() {
 
             <input
               type={showPassword ? "text" : "password"}
-              className="w-full bg-transparent px-4 py-3 text-white outline-none"
+              className="w-full bg-transparent px-3 py-3 text-white outline-none"
               placeholder="Password"
               {...register("password", {
                 required: "Password required",
@@ -140,7 +140,7 @@ function RegisterCard() {
             Confirm Password
           </label>
 
-          <div className="flex items-center rounded-2xl border border-zinc-700 bg-zinc-800 px-4 focus-within:border-emerald-500">
+          <div className="flex items-center rounded-2xl border border-zinc-700 bg-zinc-800 px-3 focus-within:border-emerald-500">
             <Lock size={18} className="text-zinc-500" />
 
             <input
@@ -171,7 +171,7 @@ function RegisterCard() {
 
         <button
           disabled={loading}
-          className="flex w-full items-center justify-center rounded-2xl bg-emerald-600 py-4 text-lg font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"
+          className="flex w-full items-center justify-center rounded-2xl bg-emerald-600 py-3 text-lg font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"
         >
           {loading ? (
             <LoaderCircle className="h-5 w-5 animate-spin" />
@@ -183,7 +183,7 @@ function RegisterCard() {
         <button
           type="button"
           onClick={() => navigate("/login")}
-          className="w-full rounded-2xl border border-blue-500 py-4 text-lg font-semibold text-blue-400 hover:bg-blue-500/10"
+          className="w-full rounded-2xl border border-blue-500 py-3 text-lg font-semibold text-blue-400 hover:bg-blue-500/10"
         >
           Back to Login
         </button>

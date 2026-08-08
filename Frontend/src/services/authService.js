@@ -7,9 +7,8 @@ export const login = (data) => {
 export const signup = (data) => {
   return api.post("/auth/signup", data);
 };
-
 export const forgotPassword = (email) => {
-  return api.post("/auth/forgot-password", {
+  return api.post("/password/forgotpassword", {
     email,
   });
 };
