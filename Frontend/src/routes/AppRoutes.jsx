@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Login from "../pages/Login";
 import Register from "../pages/Register";
@@ -7,26 +7,31 @@ import Expenses from "../pages/Expenses";
 import Analytics from "../pages/Analytics";
 import Reports from "../pages/Reports";
 import Settings from "../pages/Settings";
+import ProtectedRoute from "./ProtectedRoute";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        {/* Public Routes */}
 
         <Route path="/login" element={<Login />} />
 
         <Route path="/register" element={<Register />} />
 
-        <Route path="/dashboard" element={<Dashboard />} />
+        {/* Protected Routes */}
 
-        <Route path="/expenses" element={<Expenses />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
 
-        <Route path="/analytics" element={<Analytics />} />
+          <Route path="/expenses" element={<Expenses />} />
 
-        <Route path="/reports" element={<Reports />} />
+          <Route path="/analytics" element={<Analytics />} />
 
-        <Route path="/settings" element={<Settings />} />
+          <Route path="/reports" element={<Reports />} />
+
+          <Route path="/settings" element={<Settings />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

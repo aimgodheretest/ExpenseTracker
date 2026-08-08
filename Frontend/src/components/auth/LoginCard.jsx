@@ -5,9 +5,12 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { login } from "../../services/authService";
 import { forgotPassword } from "../../services/authService";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 function LoginCard() {
   const navigate = useNavigate();
+  const { login: authLogin } = useContext(AuthContext);
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -26,11 +29,11 @@ function LoginCard() {
 
       const response = await login(data);
 
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem(
-        "isPremium",
-        JSON.stringify(response.data.isPremium),
-      );
+      authLogin({
+        token: response.data.token,
+        user: null,
+        isPremium: response.data.isPremium,
+      });
 
       toast.success(response.data.message);
 

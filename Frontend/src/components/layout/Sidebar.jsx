@@ -10,7 +10,7 @@ import {
 const menuItems = [
   {
     name: "Dashboard",
-    path: "/",
+    path: "/dashboard",
     icon: LayoutDashboard,
   },
   {
