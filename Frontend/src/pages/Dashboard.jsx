@@ -1,9 +1,31 @@
+import { useEffect, useState } from "react";
 import MainLayout from "../layouts/MainLayout";
 import StatsCard from "../components/dashboard/StatsCard";
 import ExpenseChart from "../components/dashboard/ExpenseChart";
 import CategoryCard from "../components/dashboard/CategoryCard";
 import RecentTransactions from "../components/dashboard/RecentTransactions";
+import { getDashboard } from "../services/dashboardService";
+
 function Dashboard() {
+  const [dashboardData, setDashboardData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDashboard = async () => {
+      try {
+        const response = await getDashboard();
+
+        setDashboardData(response.data);
+      } catch (error) {
+        console.log("Dashboard error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboard();
+  }, []);
+
   return (
     <MainLayout>
       <div className="space-y-8">
@@ -28,7 +50,13 @@ function Dashboard() {
 
           <StatsCard title="Income" amount="$12,000" color="text-emerald-400" />
 
-          <StatsCard title="Expenses" amount="$5,400" color="text-red-400" />
+          <StatsCard
+            title="Expenses"
+            amount={
+              loading ? "Loading..." : `$${dashboardData?.totalExpenses || 0}`
+            }
+            color="text-red-400"
+          />
 
           <StatsCard title="Savings" amount="$6,600" color="text-cyan-400" />
         </section>

@@ -1,31 +1,17 @@
 import api from "./api";
 
-// Get Expenses
-export const getExpenses = async (page = 1, limit = 10) => {
-  const response = await api.get(
-    `/expense/get-expenses?page=${page}&limit=${limit}`,
-  );
-
-  return response.data;
+export const addExpense = (data) => {
+  return api.post("/expense/add-expense", data);
 };
 
-// Add Expense
-export const addExpense = async (expense) => {
-  const response = await api.post("/expense/add-expense", expense);
-
-  return response.data;
+export const getExpenses = (page = 1, limit = 3) => {
+  return api.get(`/expense/get-expenses?page=${page}&limit=${limit}`);
 };
 
-// Update Expense
-export const updateExpense = async (id, expense) => {
-  const response = await api.put(`/expense/edit-expense/${id}`, expense);
-
-  return response.data;
+export const editExpense = (id, data) => {
+  return api.put(`/expense/edit-expense/${id}`, data);
 };
 
-// Delete Expense
-export const deleteExpense = async (id) => {
-  const response = await api.delete(`/expense/delete-expense/${id}`);
-
-  return response.data;
+export const deleteExpense = (id) => {
+  return api.delete(`/expense/delete-expense/${id}`);
 };

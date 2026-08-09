@@ -30,7 +30,7 @@ const loginUser = async (req, res) => {
         userId: user._id,
         isPremium: user.isPremium,
       },
-      "secretkey",
+      process.env.JWT_SECRET,
     );
 
     res.status(200).json({
