@@ -16,7 +16,7 @@ function Navbar() {
       <div className="ml-6 flex items-center gap-5">
         <button
           onClick={handleLogout}
-          className="rounded-xl border border-zinc-700 px-4 py-2 text-sm font-medium text-zinc-300 transition hover:bg-zinc-800 hover:text-white"
+          className="rounded-xl border border-red-500 px-4 py-2 text-sm font-medium text-zinc-300 transition hover:bg-red-600 hover:text-white"
         >
           Logout
         </button>
