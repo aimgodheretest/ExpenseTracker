@@ -37,6 +37,11 @@ const loginUser = async (req, res) => {
       message: "User login successful",
       token,
       isPremium: user.isPremium,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
     });
   } catch (error) {
     console.log(error);
