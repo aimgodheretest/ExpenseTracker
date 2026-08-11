@@ -1,6 +1,4 @@
 require("dotenv").config();
-const path = require("path");
-const fs = require("fs");
 const express = require("express");
 const connectDB = require("./utils/db");
 const signupRouter = require("./routes/signupRouter");
@@ -16,17 +14,10 @@ const compression = require("compression");
 const morgan = require("morgan");
 
 const app = express();
-const port = 3000;
-
-const accessLogStream = fs.createWriteStream(
-  path.join(__dirname, "access.log"),
-  {
-    flags: "a",
-  },
-);
+const port = process.env.PORT || 3000;
 
 app.use(compression());
-app.use(morgan("combined", { stream: accessLogStream }));
+app.use(morgan("combined"));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
