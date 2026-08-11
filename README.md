@@ -1,165 +1,185 @@
 # 💰 Expense Tracker
 
-A full-stack personal expense tracking application with AI-powered expense categorization, analytics, PDF reports, and a premium leaderboard feature. Built with React + Vite on the frontend and Node.js/Express + MongoDB on the backend.
+A full-stack personal expense tracking application built to help users manage, analyze, and understand their spending.
+
+The application includes **AI-powered expense categorization, interactive analytics, downloadable PDF reports, password recovery, premium membership, and a leaderboard system**.
+
+Built with **React + Vite** on the frontend and **Node.js + Express + MongoDB** on the backend.
+
+---
+
+## 🌐 Live Demo
+
+
+👉 **[Open Expense Tracker](https://expensetracker-frontend-kt50.onrender.com)**
+
+---
+
+## 📸 Screenshots
+
+### 🔐 Login
+
+![Login](./screenshots/login.png)
+
+### 📊 Dashboard
+
+![Dashboard](./screenshots/dash.png)
+
+### 💸 Expense Management
+
+![Expenses](./screenshots/expenses.png)
+
+### 📈 Analytics
+
+![Analytics](./screenshots/analytics.png)
+
+### 📄 Monthly Reports
+
+![Reports](./screenshots/reports.png)
+
+### 🏆 Premium Leaderboard
+
+![Leaderboard](./screenshots/premium.png)
+
+### ⚙️ Settings
+
+![Settings](./screenshots/setting.png)
+
+> Screenshots showcase the responsive UI, dashboard, expense management, analytics, reports, premium features, and authentication flow.
+
+---
 
 ## ✨ Features
 
-- **Authentication** — Secure signup/login with JWT-based auth and bcrypt password hashing
-- **Expense Management** — Add, edit, delete, and filter expenses
-- **AI Categorization** — Expenses are auto-categorized using Google's Gemini AI (Food, Fuel, Movies, Travel, Shopping, Bills, Entertainment, Other)
-- **Dashboard** — At-a-glance overview of spending with stats cards and recent transactions
-- **Analytics** — Visual breakdowns by category and month using interactive charts (Recharts)
-- **Reports** — Monthly summaries with downloadable PDF export (jsPDF)
-- **Password Recovery** — Email-based forgot/reset password flow via Brevo (Sendinblue) transactional email
-- **Premium & Leaderboard** — Upgrade to premium via Cashfree payment gateway to unlock a leaderboard feature
-- **Responsive UI** — Built with Tailwind CSS and Lucide icons
+- **Authentication**
+  - Secure user registration and login
+  - JWT-based authentication
+  - Password hashing using bcrypt
+  - Protected routes
+
+- **Expense Management**
+  - Add expenses
+  - Edit expenses
+  - Delete expenses
+  - Filter and view expenses
+  - Expense notes and categories
+
+- **AI Expense Categorization**
+  - Automatically categorizes expenses using Google's Gemini AI
+  - Supported categories include:
+    - Food
+    - Fuel
+    - Movies
+    - Travel
+    - Shopping
+    - Bills
+    - Entertainment
+    - Other
+
+- **Dashboard**
+  - Total spending overview
+  - Monthly spending statistics
+  - Recent transactions
+  - Category summaries
+
+- **Analytics**
+  - Spending breakdown by category
+  - Monthly spending analysis
+  - Interactive charts using Recharts
+
+- **Reports**
+  - Monthly expense summaries
+  - Downloadable PDF reports
+  - Tabular expense data
+  - PDF generation using jsPDF
+
+- **Password Recovery**
+  - Forgot password functionality
+  - Secure password reset flow
+  - Transactional emails using Brevo
+
+- **Premium Membership**
+  - Premium membership purchase
+  - Cashfree payment gateway integration
+  - Premium-only features
+
+- **Leaderboard**
+  - Premium users can access the expense leaderboard
+  - Spending-based user ranking
+
+- **Responsive UI**
+  - Responsive design for desktop, tablet, and mobile
+  - Tailwind CSS
+  - Lucide icons
+  - Toast notifications
+
+---
 
 ## 🛠️ Tech Stack
 
-**Frontend**
-- React 19 + Vite
+### Frontend
+
+- React 19
+- Vite
 - React Router DOM
 - Tailwind CSS
-- Recharts (charts/graphs)
+- Recharts
 - React Hook Form
 - Axios
-- jsPDF + jsPDF-AutoTable (PDF report generation)
-- React Hot Toast (notifications)
+- jsPDF
+- jsPDF-AutoTable
+- React Hot Toast
+- Lucide React
 
-**Backend**
-- Node.js + Express 5
-- MongoDB + Mongoose
-- JWT (jsonwebtoken) for authentication
-- bcrypt for password hashing
-- Google Gemini AI (`@google/genai`) for expense categorization
-- Cashfree Payment Gateway for premium purchases
-- Brevo (`sib-api-v3-sdk`) for transactional emails
-- Morgan (logging) + Compression + CORS
+### Backend
 
-## 📁 Project Structure
+- Node.js
+- Express 5
+- MongoDB
+- Mongoose
+- JWT (`jsonwebtoken`)
+- bcrypt
+- Google Gemini AI (`@google/genai`)
+- Cashfree Payment Gateway
+- Brevo (`sib-api-v3-sdk`)
+- Morgan
+- Compression
+- CORS
 
-```
-ExpenseTracker/
-├── Backend/
-│   ├── controllers/       # Route handler logic
-│   ├── middleware/        # Auth & premium-access middleware
-│   ├── models/            # Mongoose schemas (User, Expense, Order, ForgotPassword)
-│   ├── routes/            # Express route definitions
-│   ├── utils/             # DB connection, config, AI service
-│   └── app.js              # App entry point
-└── Frontend/
-    ├── src/
-    │   ├── components/    # UI, auth, layout, dashboard, expense, analytics, reports, settings, premium components
-    │   ├── pages/          # Route-level pages (Dashboard, Expenses, Analytics, Reports, Settings, Login, Register, Leaderboard...)
-    │   ├── routes/         # App routing & protected routes
-    │   ├── services/       # API service layer (axios)
-    │   ├── context/        # Auth context provider
-    │   └── layouts/        # Main app layout
-    └── index.html
-```
+---
 
-## 🚀 Getting Started
+## 🏗️ Architecture
 
-### Prerequisites
-
-- Node.js (v18+ recommended)
-- npm
-- A MongoDB instance (local or Atlas)
-- API keys for: Google Gemini, Cashfree, and Brevo (see below)
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/<your-username>/ExpenseTracker.git
-cd ExpenseTracker
-```
-
-### 2. Backend Setup
-
-```bash
-cd Backend
-npm install
-```
-
-Create a `.env` file in the `Backend` directory:
-
-```env
-PORT=3000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-
-# Google Gemini AI (for auto-categorization)
-GEMINI_API_KEY=your_gemini_api_key
-
-# Cashfree Payment Gateway
-CASHFREE_APP_ID=your_cashfree_app_id
-CASHFREE_SECRET_KEY=your_cashfree_secret_key
-
-# Brevo (Sendinblue) — transactional email for password reset
-BREVO_API_KEY=your_brevo_api_key
-
-# Frontend URL (used for payment redirect callbacks)
-FRONTEND_URL=http://localhost:5173
-```
-
-Start the backend server:
-
-```bash
-node app.js
-```
-
-The API will run on `http://localhost:3000` (or your configured `PORT`).
-
-### 3. Frontend Setup
-
-```bash
-cd Frontend
-npm install
-```
-
-Start the development server:
-
-```bash
-npm run dev
-```
-
-The app will be available at `http://localhost:5173`.
-
-## 📡 API Overview
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|--------------|:---:|
-| POST | `/auth/signup` | Register a new user | ❌ |
-| POST | `/auth/login` | Log in | ❌ |
-| GET | `/dashboard` | Get dashboard summary data | ✅ |
-| POST | `/expense/add-expense` | Add a new expense | ✅ |
-| GET | `/expense/get-expenses` | List expenses | ✅ |
-| PUT | `/expense/edit-expense/:id` | Edit an expense | ✅ |
-| DELETE | `/expense/delete-expense/:id` | Delete an expense | ✅ |
-| GET | `/report` | Get expense report data | ✅ |
-| POST | `/purchase/premium` | Create a premium purchase order | ✅ |
-| POST | `/purchase/updatetransactionstatus` | Verify/update payment status | ✅ |
-| GET | `/leaderboard` | View leaderboard | ✅ (Premium) |
-| POST | `/forgotpassword` | Request a password reset link | ❌ |
-| GET | `/resetpassword/:id` | Validate a reset request | ❌ |
-| POST | `/updatepassword/:id` | Set a new password | ❌ |
-
-## 🔒 Environment Variables Reference
-
-| Variable | Description |
-|----------|--------------|
-| `MONGO_URI` | MongoDB connection string |
-| `JWT_SECRET` | Secret used to sign JWT tokens |
-| `GEMINI_API_KEY` | Google Gemini API key for AI expense categorization |
-| `CASHFREE_APP_ID` / `CASHFREE_SECRET_KEY` | Cashfree payment gateway credentials (sandbox by default) |
-| `BREVO_API_KEY` | Brevo API key for sending password-reset emails |
-| `FRONTEND_URL` | Frontend base URL, used in payment return callback |
-| `PORT` | Backend server port (defaults to 3000) |
-
-## 🤝 Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request with any improvements.
-
-## 📄 License
-
-Murli Kumar
+```text
+                    ┌─────────────────────┐
+                    │       User          │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │   React Frontend    │
+                    │       + Vite        │
+                    │    Tailwind CSS     │
+                    └──────────┬──────────┘
+                               │
+                         REST API / Axios
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │   Express Backend   │
+                    │      Node.js        │
+                    └──────────┬──────────┘
+                               │
+              ┌────────────────┼────────────────┐
+              │                │                │
+              ▼                ▼                ▼
+       ┌────────────┐   ┌─────────────┐  ┌──────────────┐
+       │  MongoDB   │   │ Gemini AI   │  │   Cashfree   │
+       │  Database  │   │Categorization│ │   Payments   │
+       └────────────┘   └─────────────┘  └──────────────┘
+                               │
+                               ▼
+                         ┌────────────┐
+                         │   Brevo    │
+                         │   Emails   │
+                         └────────────┘
