@@ -31,6 +31,13 @@ app.use("/premium", premiumRouter);
 app.use("/password", passwordRouter);
 app.use(reportRouter);
 
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    message: "ExpenseTracker API is running",
+  });
+});
+
 connectDB().then(() => {
   app.listen(port, () => {
     console.log(`Server is Running on port ${port}`);
