@@ -7,16 +7,14 @@ import {
   CartesianGrid,
 } from "recharts";
 
-const data = [
-  { month: "Jan", expense: 420 },
-  { month: "Feb", expense: 680 },
-  { month: "Mar", expense: 520 },
-  { month: "Apr", expense: 840 },
-  { month: "May", expense: 610 },
-  { month: "Jun", expense: 920 },
-];
+function ExpenseChart({ monthlyExpenses = [] }) {
+  const data = monthlyExpenses.map((item) => ({
+    month: new Date(item.year, item.month - 1).toLocaleString("default", {
+      month: "short",
+    }),
+    expense: item.total,
+  }));
 
-function ExpenseChart() {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart data={data}>

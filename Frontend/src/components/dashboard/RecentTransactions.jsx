@@ -1,19 +1,4 @@
-const transactions = [
-  {
-    title: "Starbucks",
-    amount: "-$18",
-  },
-  {
-    title: "Salary",
-    amount: "+$2200",
-  },
-  {
-    title: "Netflix",
-    amount: "-$12",
-  },
-];
-
-function RecentTransactions() {
+function RecentTransactions({ recentExpenses = [] }) {
   return (
     <div>
       <h2 className="mb-6 text-xl font-semibold text-white">
@@ -21,24 +6,20 @@ function RecentTransactions() {
       </h2>
 
       <div className="space-y-4">
-        {transactions.map((item, index) => (
-          <div
-            key={index}
-            className="flex items-center justify-between rounded-xl bg-zinc-800 p-4"
-          >
-            <p className="text-white">{item.title}</p>
-
-            <p
-              className={`font-semibold ${
-                item.amount.startsWith("+")
-                  ? "text-emerald-400"
-                  : "text-red-400"
-              }`}
+        {recentExpenses.length === 0 ? (
+          <p className="text-zinc-500">No transactions yet.</p>
+        ) : (
+          recentExpenses.map((item) => (
+            <div
+              key={item._id}
+              className="flex items-center justify-between rounded-xl bg-zinc-800 p-4"
             >
-              {item.amount}
-            </p>
-          </div>
-        ))}
+              <p className="text-white">{item.description}</p>
+
+              <p className="font-semibold text-red-400">-₹{item.amount}</p>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
