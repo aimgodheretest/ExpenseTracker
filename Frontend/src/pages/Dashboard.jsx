@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import MainLayout from "../layouts/MainLayout";
 import StatsCard from "../components/dashboard/StatsCard";
 import ExpenseChart from "../components/dashboard/ExpenseChart";
@@ -8,6 +9,7 @@ import { getDashboard } from "../services/dashboardService";
 import PremiumCard from "../components/premium/PremiumCard";
 
 function Dashboard() {
+  const { user } = useContext(AuthContext);
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -33,7 +35,9 @@ function Dashboard() {
         {/* Hero */}
         <section className="flex items-center justify-between rounded-3xl border border-zinc-800 bg-zinc-900 p-8">
           <div>
-            <h1 className="text-4xl font-bold text-white">Welcome Back</h1>
+            <h1 className="text-4xl font-bold text-white">
+              Welcome Back,{user?.name || "User"} 👋
+            </h1>
 
             <p className="mt-2 text-zinc-400">
               Manage your finances with confidence.
