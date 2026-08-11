@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Crown, LoaderCircle } from "lucide-react";
 
@@ -82,6 +83,7 @@ function PremiumCard() {
   if (isPremium) {
     return (
       <section className="rounded-3xl border border-emerald-500/30 bg-zinc-900 p-8">
+        {/* Premium Header */}
         <div className="flex items-center gap-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/20">
             <Crown className="text-emerald-400" />
@@ -95,6 +97,38 @@ function PremiumCard() {
             <p className="mt-1 text-zinc-400">
               You have access to premium features.
             </p>
+          </div>
+        </div>
+
+        {/* Premium Features */}
+        <div className="mt-8">
+          <h3 className="mb-4 text-lg font-semibold text-white">
+            Premium Features
+          </h3>
+
+          <div className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-zinc-800/50 p-5">
+            <div className="flex items-center gap-4">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-500/15">
+                <span className="text-xl">🏆</span>
+              </div>
+
+              <div>
+                <h4 className="font-semibold text-white">
+                  Spending Leaderboard
+                </h4>
+
+                <p className="mt-1 text-sm text-zinc-400">
+                  Compare your expenses with other users.
+                </p>
+              </div>
+            </div>
+
+            <Link
+              to="/leaderboard"
+              className="rounded-xl bg-emerald-500 px-5 py-3 font-semibold text-white transition hover:bg-emerald-600"
+            >
+              View Leaderboard
+            </Link>
           </div>
         </div>
       </section>
