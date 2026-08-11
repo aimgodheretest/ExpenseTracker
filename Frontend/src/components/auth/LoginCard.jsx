@@ -31,7 +31,7 @@ function LoginCard() {
 
       authLogin({
         token: response.data.token,
-        user: null,
+        user: response.data.user,
         isPremium: response.data.isPremium,
       });
 

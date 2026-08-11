@@ -1,6 +1,5 @@
 import MainLayout from "../layouts/MainLayout";
 import ProfileCard from "../components/settings/ProfileCard";
-import PreferencesCard from "../components/settings/PreferencesCard";
 import SecurityCard from "../components/settings/SecurityCard";
 
 function Settings() {
@@ -15,10 +14,8 @@ function Settings() {
           </p>
         </div>
 
-        <ProfileCard />
-
         <div className="grid grid-cols-2 gap-6">
-          <PreferencesCard />
+          <ProfileCard />
           <SecurityCard />
         </div>
       </div>
