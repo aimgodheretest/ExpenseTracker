@@ -5,6 +5,7 @@ import ExpenseChart from "../components/dashboard/ExpenseChart";
 import CategoryCard from "../components/dashboard/CategoryCard";
 import RecentTransactions from "../components/dashboard/RecentTransactions";
 import { getDashboard } from "../services/dashboardService";
+import PremiumCard from "../components/premium/PremiumCard";
 
 function Dashboard() {
   const [dashboardData, setDashboardData] = useState(null);
@@ -32,7 +33,7 @@ function Dashboard() {
         {/* Hero */}
         <section className="flex items-center justify-between rounded-3xl border border-zinc-800 bg-zinc-900 p-8">
           <div>
-            <h1 className="text-4xl font-bold text-white">Welcome Back 👋</h1>
+            <h1 className="text-4xl font-bold text-white">Welcome Back</h1>
 
             <p className="mt-2 text-zinc-400">
               Manage your finances with confidence.
@@ -84,6 +85,8 @@ function Dashboard() {
             color="text-cyan-400"
           />
         </section>
+        
+        <PremiumCard />
 
         {/* Middle Section */}
         <section className="grid grid-cols-3 gap-6">

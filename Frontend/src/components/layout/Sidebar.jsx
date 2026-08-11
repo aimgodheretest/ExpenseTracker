@@ -6,7 +6,8 @@ import {
   FileText,
   Settings,
 } from "lucide-react";
-
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 const menuItems = [
   {
     name: "Dashboard",
@@ -36,6 +37,7 @@ const menuItems = [
 ];
 
 function Sidebar() {
+  const { isPremium } = useContext(AuthContext);
   return (
     <aside className="w-64 bg-zinc-900 border-r border-zinc-800 flex flex-col">
       <div className="h-20 flex items-center px-8 border-b border-zinc-800">
@@ -86,8 +88,9 @@ text-emerald-400  "
 
             <div>
               <h3 className="text-sm font-semibold text-white">Murli Kumar</h3>
-
-              <p className="text-xs text-zinc-400">Free Plan</p>
+              <p className="text-xs text-zinc-400">
+                {isPremium ? "Premium Plan" : "Free Plan"}
+              </p>{" "}
             </div>
           </div>
         </div>

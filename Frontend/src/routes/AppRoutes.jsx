@@ -8,7 +8,7 @@ import Analytics from "../pages/Analytics";
 import Reports from "../pages/Reports";
 import Settings from "../pages/Settings";
 import ProtectedRoute from "./ProtectedRoute";
-
+import PaymentSuccess from "../pages/PaymentSuccess";
 function AppRoutes() {
   return (
     <BrowserRouter>
@@ -23,6 +23,8 @@ function AppRoutes() {
 
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
+
+          <Route path="/payment-success" element={<PaymentSuccess />} />
 
           <Route path="/expenses" element={<Expenses />} />
 
