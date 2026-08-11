@@ -8,13 +8,44 @@ function Card({ title, value }) {
   );
 }
 
-function AnalyticsCards() {
+function AnalyticsCards({ dashboardData, loading }) {
+  const totalExpenses = dashboardData?.totalExpenses || 0;
+
+  const transactionCount = dashboardData?.transactionCount || 0;
+
+  const averageExpense =
+    transactionCount > 0 ? totalExpenses / transactionCount : 0;
+
+  const highestExpense =
+    dashboardData?.recentExpenses?.length > 0
+      ? Math.max(
+          ...dashboardData.recentExpenses.map(
+            (expense) => Number(expense.amount) || 0,
+          ),
+        )
+      : 0;
+
   return (
     <div className="grid grid-cols-4 gap-6">
-      <Card title="Total Spending" value="₹18,450" />
-      <Card title="Average Expense" value="₹615" />
-      <Card title="Highest Expense" value="₹2,800" />
-      <Card title="Transactions" value="42" />
+      <Card
+        title="Total Spending"
+        value={loading ? "Loading..." : `₹${totalExpenses.toFixed(2)}`}
+      />
+
+      <Card
+        title="Average Expense"
+        value={loading ? "Loading..." : `₹${averageExpense.toFixed(2)}`}
+      />
+
+      <Card
+        title="Highest Expense"
+        value={loading ? "Loading..." : `₹${highestExpense.toFixed(2)}`}
+      />
+
+      <Card
+        title="Transactions"
+        value={loading ? "Loading..." : transactionCount}
+      />
     </div>
   );
 }

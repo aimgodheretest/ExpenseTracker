@@ -8,16 +8,14 @@ import {
   Tooltip,
 } from "recharts";
 
-const data = [
-  { month: "Jan", amount: 4200 },
-  { month: "Feb", amount: 3600 },
-  { month: "Mar", amount: 5100 },
-  { month: "Apr", amount: 4300 },
-  { month: "May", amount: 6200 },
-  { month: "Jun", amount: 5500 },
-];
+function MonthlyChart({ monthlyExpenses = [] }) {
+  const data = monthlyExpenses.map((item) => ({
+    month: new Date(item.year, item.month - 1).toLocaleString("default", {
+      month: "short",
+    }),
+    amount: item.total,
+  }));
 
-function MonthlyChart() {
   return (
     <div className="rounded-3xl border border-zinc-800 bg-zinc-900 p-6 h-105">
       <h2 className="text-xl font-semibold text-white">Monthly Expenses</h2>
