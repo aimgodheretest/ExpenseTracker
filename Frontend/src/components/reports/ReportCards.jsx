@@ -8,14 +8,25 @@ function Card({ title, value }) {
   );
 }
 
-function ReportCards() {
+function ReportCards({ reportData = [], loading }) {
+  const totalExpenses = reportData.reduce(
+    (total, expense) => total + Number(expense.amount || 0),
+    0,
+  );
+
   return (
     <div className="grid grid-cols-3 gap-6">
-      <Card title="Reports Generated" value="18" />
+      <Card
+        title="Total Expenses"
+        value={loading ? "Loading..." : `₹${totalExpenses.toFixed(2)}`}
+      />
 
-      <Card title="Current Month" value="August" />
+      <Card title="Current Month" value={loading ? "Loading..." : "August"} />
 
-      <Card title="Downloads" value="42" />
+      <Card
+        title="Transactions"
+        value={loading ? "Loading..." : reportData.length}
+      />
     </div>
   );
 }
