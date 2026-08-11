@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "../pages/Login";
 import Register from "../pages/Register";
@@ -10,18 +10,20 @@ import Settings from "../pages/Settings";
 import ProtectedRoute from "./ProtectedRoute";
 import PaymentSuccess from "../pages/PaymentSuccess";
 import Leaderboard from "../pages/Leaderboard";
+
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public Routes */}
+        {/* Root */}
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
+        {/* Public Routes */}
         <Route path="/login" element={<Login />} />
 
         <Route path="/register" element={<Register />} />
 
         {/* Protected Routes */}
-
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
 
