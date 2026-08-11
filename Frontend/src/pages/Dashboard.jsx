@@ -39,10 +39,6 @@ function Dashboard() {
               Manage your finances with confidence.
             </p>
           </div>
-
-          <button className="rounded-xl bg-emerald-500 px-6 py-3 font-semibold text-white hover:bg-emerald-600 transition">
-            + Add Expense
-          </button>
         </section>
 
         {/* Stats */}
@@ -85,7 +81,7 @@ function Dashboard() {
             color="text-cyan-400"
           />
         </section>
-        
+
         <PremiumCard />
 
         {/* Middle Section */}

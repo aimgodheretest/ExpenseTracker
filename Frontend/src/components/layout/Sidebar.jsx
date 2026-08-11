@@ -1,11 +1,5 @@
-import { NavLink } from "react-router-dom";
-import {
-  LayoutDashboard,
-  Wallet,
-  PieChart,
-  FileText,
-  Settings,
-} from "lucide-react";
+import { NavLink, Link } from "react-router-dom";
+import { LayoutDashboard, Wallet, PieChart, FileText } from "lucide-react";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 const menuItems = [
@@ -29,15 +23,10 @@ const menuItems = [
     path: "/reports",
     icon: FileText,
   },
-  {
-    name: "Settings",
-    path: "/settings",
-    icon: Settings,
-  },
 ];
 
 function Sidebar() {
-  const { isPremium } = useContext(AuthContext);
+  const { user, isPremium } = useContext(AuthContext);
   return (
     <aside className="w-64 bg-zinc-900 border-r border-zinc-800 flex flex-col">
       <div className="h-20 flex items-center px-8 border-b border-zinc-800">
@@ -80,20 +69,30 @@ text-emerald-400  "
             </NavLink>
           );
         })}
-        <div className="border-t border-zinc-800 p-5">
+        <Link
+          to="/settings"
+          className="border-t border-zinc-800 p-5 block hover:bg-zinc-800/50 transition"
+        >
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500 font-semibold text-white">
-              MK
+              {user?.name
+                ?.split(" ")
+                .map((word) => word[0])
+                .join("")
+                .slice(0, 2)
+                .toUpperCase() || "U"}
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-white">Murli Kumar</h3>
+              <h3 className="text-sm font-semibold text-white">
+                {user?.name || "User"}
+              </h3>
               <p className="text-xs text-zinc-400">
                 {isPremium ? "Premium Plan" : "Free Plan"}
-              </p>{" "}
+              </p>
             </div>
           </div>
-        </div>
+        </Link>
       </nav>
     </aside>
   );
